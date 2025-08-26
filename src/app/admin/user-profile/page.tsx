@@ -93,54 +93,95 @@ export default function UserProfiles() {
         </div>
 
         {/* Users List */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 text-sm font-medium text-gray-500">
-            <div className="col-span-3">Name</div>
-            <div className="col-span-2">Contact No</div>
-            <div className="col-span-2">Role</div>
-            <div className="col-span-2">Status</div>
-            <div className="col-span-3 text-right">Actions</div>
-          </div>
-
-          {/* Users */}
-          {users.map((user) => (
-            <div key={user.id} className="grid grid-cols-12 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50">
-              <div className="col-span-3 flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 font-semibold text-sm">{user.initials}</span>
-                </div>
-                <div>
-                  <div className="font-medium">{user.name}</div>
-                  <div className="text-sm text-gray-500">{user.role}</div>
-                </div>
-              </div>
-              <div className="col-span-2 flex items-center">
-                <span>{user.contact}</span>
-              </div>
-              <div className="col-span-2 flex items-center">
-                <Badge variant="outline" className="border-gray-200 text-gray-700">
-                  {user.position}
-                </Badge>
-              </div>
-              <div className="col-span-2 flex items-center">
-                <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
-                  {user.status}
-                </Badge>
-              </div>
-              <div className="col-span-3 flex items-center justify-end gap-2">
-                <Button variant="outline" size="sm" className="text-blue-600 border-blue-100 hover:bg-blue-50">
-                  Generate OTP
-                </Button>
-                <Button variant="ghost" size="icon" className="text-gray-500 hover:bg-gray-100">
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white dark:bg-black rounded-lg border border-gray-200 dark:border-gray-800 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 ">
+              <tr className="hidden md:table-row">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-black  uppercase tracking-wider">Name</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-black  uppercase tracking-wider">Contact No</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-black  uppercase tracking-wider">Role</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-black  uppercase tracking-wider">Status</th>
+                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-black  uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-700">
+              {users.map((user) => (
+                <tr key={user.id} className=" ">
+                  {/* Mobile View */}
+                  <td className="md:hidden px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 dark:text-blue-300 font-semibold text-sm">{user.initials}</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-black dark:text-white">{user.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{user.role}</div>
+                        <div className="mt-1 text-sm">{user.contact}</div>
+                        <div className="mt-2 flex items-center gap-2">
+                          <Badge variant="outline" className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                            {user.position}
+                          </Badge>
+                          <Badge className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900">
+                            {user.status}
+                          </Badge>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <Button variant="outline" size="sm" className="text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-900 hover:bg-blue-50 dark:hover:bg-blue-950">
+                            Generate OTP
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30">
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  {/* Desktop View */}
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 dark:text-blue-300 font-semibold text-sm">{user.initials}</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-black dark:text-white">{user.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{user.role}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    {user.contact}
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap">
+                    <Badge variant="outline" className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                      {user.position}
+                    </Badge>
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap">
+                    <Badge className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900">
+                      {user.status}
+                    </Badge>
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div className="flex items-center justify-end gap-2">
+                      <Button variant="outline" size="sm" className="text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-900 hover:bg-blue-50 dark:hover:bg-blue-950">
+                        Generate OTP
+                      </Button>
+                      <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

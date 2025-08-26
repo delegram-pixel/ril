@@ -75,37 +75,62 @@ export default function SecurityLogs() {
         </div>
 
         {/* Content */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 text-sm font-medium text-gray-500">
-            <div className="col-span-1">S/N</div>
-            <div className="col-span-3">Date & Time</div>
-            <div className="col-span-4">User Email</div>
-            <div className="col-span-2">Status</div>
-            <div className="col-span-2">Attempts</div>
-          </div>
-
-          {/* Logs */}
-          {securityLogs.map((log, index) => (
-            <div key={log.id} className="grid grid-cols-12 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50">
-              <div className="col-span-1 text-white">{index + 1}</div>
-              <div className="col-span-3 text-white">{log.dateTime}</div>
-              <div className="col-span-4 text-white">{log.userEmail}</div>
-              <div className="col-span-2">
-                <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
-                  {log.status}
-                </Badge>
-              </div>
-              <div className="col-span-2 text-red-600 font-medium">
-                {log.attempts}
-              </div>
-            </div>
-          ))}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr className="hidden md:table-row">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S/N</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Email</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attempts</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
+              {securityLogs.map((log, index) => (
+                <tr key={log.id} className="">
+                  {/* Mobile View */}
+                  <td className="md:hidden px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    <div className="font-medium text-black">S/N: {index + 1}</div>
+                    <div className="text-black dark:text-white">{log.dateTime}</div>
+                    <div className="text-black dark:text-white">{log.userEmail}</div>
+                    <div className="mt-2">
+                      <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
+                        {log.status}
+                      </Badge>
+                      <span className="ml-2 text-red-600 font-medium">
+                        {log.attempts} attempts
+                      </span> 
+                    </div>
+                  </td>
+                  
+                  {/* Desktop View */}
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    {index + 1}
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    {log.dateTime}
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    {log.userEmail}
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
+                    <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
+                      {log.status}
+                    </Badge>
+                  </td>
+                  <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">
+                    {log.attempts}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {/* Pagination */}
         <div className="flex items-center justify-between mt-6">
-          <p className="text-sm text-white">
+          <p className="text-sm text-black dark:text-white">
             Showing {securityLogs.length} of {securityLogs.length}
           </p>
           <div className="flex items-center gap-2">

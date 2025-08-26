@@ -37,7 +37,9 @@ const Otp = () => {
                 <Image src="/back-arrow.svg" alt="Back" width={24} height={24} className="dark:invert" />
             </button>
             <div className="flex flex-col items-center gap-10 p-8 w-full max-w-md z-10">
-                <Image className="w-40 h-auto" width={160} height={72} alt="RIL logo" src="/RIL logo.svg" />
+                <div className="w-40 h-auto relative dark:invert">
+                    <Image width={160} height={72} alt="RIL logo" src="/RIL logo.svg" className="w-full h-auto" />
+                </div>
                 {isSuccess ? (
                     <div className="text-center flex flex-col items-center gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

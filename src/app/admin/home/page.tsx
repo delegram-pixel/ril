@@ -119,6 +119,7 @@ export default function AdminDashboard() {
                     <th className="w-28 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
+                
                 <tbody className="divide-y divide-gray-200">
                   {users.map((user, index) => (
                     <tr key={user.id} className="">
