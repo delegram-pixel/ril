@@ -90,7 +90,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-semibold mb-1">Daily Log</h2>
-              <p className="text-gray-600 text-sm">See who&apos;s signed in today</p>
+              <p className="text-white text-sm">See who&apos;s signed in today</p>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" className="gap-2 bg-white">
@@ -121,8 +121,8 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {users.map((user, index) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="p-4 text-sm text-gray-600">{index + 1}</td>
+                    <tr key={user.id} className="">
+                      <td className="p-4 text-sm text-black dark:text-white ">{index + 1}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8">
@@ -131,14 +131,14 @@ export default function AdminDashboard() {
                           <span className="font-medium">{user.name}</span>
                         </div>
                       </td>
-                      <td className="p-4 text-sm text-gray-600">{user.email}</td>
+                      <td className="p-4 text-sm text-black dark:text-white">{user.email}</td>
                       <td className="p-4 whitespace-nowrap">
                         <Badge variant="outline" className="text-xs w-full text-center">
                           {user.role}
                         </Badge>
                       </td>
-                      <td className="p-4 text-sm text-gray-600 whitespace-nowrap">{user.signInTime}</td>
-                      <td className="p-4 text-sm text-gray-600 whitespace-nowrap">{user.signOutTime}</td>
+                      <td className="p-4 text-sm text-black dark:text-white whitespace-nowrap">{user.signInTime}</td>
+                      <td className="p-4 text-sm text-black dark:text-white whitespace-nowrap">{user.signOutTime}</td>
                       <td className="p-4">
                         <Badge
                           variant={user.status === "Complete" ? "outline" : "default"}
@@ -160,7 +160,7 @@ export default function AdminDashboard() {
 
           {/* Pagination */}
           <div className="flex items-center justify-between mt-6">
-            <p className="text-sm text-gray-600">Showing 5 of 5</p>
+            <p className="text-sm text-black dark:text-white">Showing 5 of 5</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" className="h-8 w-8 p-0" disabled>
                 <ChevronLeft className="h-4 w-4" />
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
                 Security Logs
               </Link>
             </div>
-            <p className="text-sm text-gray-600 mt-1">View invalid OTP attempts</p>
+            <p className="text-sm text-black dark:text-white mt-1">View invalid OTP attempts</p>
           </div>
         </div>
       </div>

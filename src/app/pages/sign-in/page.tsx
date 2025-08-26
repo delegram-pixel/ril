@@ -23,11 +23,13 @@ const SignIn = () => {
 
     return (
         <div className="flex justify-center items-center w-full h-screen overflow-hidden relative">
-            <button onClick={() => router.back()} className="absolute top-4 left-4">
+            {/* <button onClick={() => router.back()} className="absolute top-4 left-4">
                 <Image src="/back-arrow.svg" alt="Back" width={24} height={24} className="dark:invert" />
-            </button> 
+            </button>  */}
             <div className="flex flex-col items-center gap-10 p-8 w-full max-w-md z-10">
-                <Image className="w-40 h-auto" width={160} height={72} alt="RIL logo" src="/RIL logo.svg" />
+                <div className="w-40 h-auto relative dark:invert">
+                    <Image width={160} height={72} alt="RIL logo" src="/RIL logo.svg" className="w-full h-auto" />
+                </div>
                 <div className="text-center">
                     <h1 className="text-2xl font-semibold text-primary">Welcome to the Office</h1>
                     <p className="text-muted-foreground">Let&apos;s get you signed in</p>

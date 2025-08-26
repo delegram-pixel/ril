@@ -23,7 +23,7 @@ export default function SecurityLogs() {
   ]
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -88,9 +88,9 @@ export default function SecurityLogs() {
           {/* Logs */}
           {securityLogs.map((log, index) => (
             <div key={log.id} className="grid grid-cols-12 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50">
-              <div className="col-span-1 text-gray-600">{index + 1}</div>
-              <div className="col-span-3 text-gray-600">{log.dateTime}</div>
-              <div className="col-span-4 text-gray-600">{log.userEmail}</div>
+              <div className="col-span-1 text-white">{index + 1}</div>
+              <div className="col-span-3 text-white">{log.dateTime}</div>
+              <div className="col-span-4 text-white">{log.userEmail}</div>
               <div className="col-span-2">
                 <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
                   {log.status}
@@ -105,7 +105,7 @@ export default function SecurityLogs() {
 
         {/* Pagination */}
         <div className="flex items-center justify-between mt-6">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-white">
             Showing {securityLogs.length} of {securityLogs.length}
           </p>
           <div className="flex items-center gap-2">
