@@ -1,26 +1,77 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const Otp = () => {
+const OtpContent = () => {
     const [otp, setOtp] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const email = searchParams.get('email');
 
-    const handleOtpVerification = useCallback((e: React.FormEvent) => {
+    const recordAttendance = async (userId: string) => {
+        try {
+            await fetch('/api/attendance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    userId: parseInt(userId), 
+                    action: 'signin' 
+                }),
+            });
+        } catch (error) {
+            console.error('Error recording attendance:', error);
+        }
+    };
+
+    const handleOtpVerification = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
         if (!otp) {
             setError('Please enter the OTP.');
-        } else {
-            setError('');
-            // Add your OTP verification logic here
-            console.log('Verifying OTP:', otp);
-            setIsSuccess(true);
+            return;
         }
-    }, [otp]);
+        if (!email) {
+            setError('Email not found. Please go back and try again.');
+            return;
+        }
+
+        setError('');
+        setLoading(true);
+
+        try {
+            // First verify the OTP
+            const response = await fetch('/api/auth/otp/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, otp }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // If OTP is valid, record attendance
+                if (data.user?.id) {
+                    await recordAttendance(data.user.id);
+                }
+                setIsSuccess(true);
+            } else {
+                setError(data.error || 'Failed to verify OTP. Please try again.');
+            }
+        } catch (error) {
+            console.error('OTP verification error:', error);
+            setError('Something went wrong. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    }, [otp, email]);
 
     useEffect(() => {
         if (isSuccess) {
@@ -65,11 +116,16 @@ const Otp = () => {
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
                                     maxLength={6}
+                                    disabled={loading}
                                 />
                             </div>
                             {error && <p className="text-destructive text-sm -mt-2 mb-2 text-center">{error}</p>}
-                            <button type="submit" className="bg-primary text-primary-foreground font-semibold py-4 px-3 rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
-                                Verify
+                            <button 
+                                type="submit" 
+                                disabled={loading}
+                                className="bg-primary text-primary-foreground font-semibold py-4 px-3 rounded-lg cursor-pointer transition-colors hover:bg-primary/90 disabled:opacity-50"
+                            >
+                                {loading ? 'Verifying...' : 'Verify'}
                             </button>
                         </form>
                     </>
@@ -77,6 +133,14 @@ const Otp = () => {
             </div>
             <Image className="absolute bottom-0 left-1/2 -translate-x-1/2 w-11/12 max-w-lg h-auto opacity-10 z-0" width={366} height={402} alt="background logo" src="/Logo (1).svg" />
         </div>
+    );
+};
+
+const Otp = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <OtpContent />
+        </Suspense>
     );
 };
 

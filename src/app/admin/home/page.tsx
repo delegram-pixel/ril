@@ -1,58 +1,74 @@
+'use client'
+
 import { Search, Filter, Download, ChevronLeft, ChevronRight, ChevronDown, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
+import { useEffect, useState } from 'react'
+
+interface User {
+  id: string
+  fullName: string
+  email: string
+  role: string
+  position: string
+  contact: string
+  createdAt: string
+  updatedAt: string
+  lastSignedIn: string | null
+}
 
 export default function AdminDashboard() {
-  const users = [
-    {
-      id: 1,
-      name: "Shammah Nei",
-      email: "shammahnei@gmail.com",
-      role: "Staff",
-      signInTime: "10:48 AM",
-      signOutTime: "5:05 PM",
-      status: "Complete",
-    },
-    {
-      id: 2,
-      name: "Udeme Jonah",
-      email: "udemejonah@gmail.com",
-      role: "Staff",
-      signInTime: "9:30 AM",
-      signOutTime: "5:35 PM",
-      status: "Complete",
-    },
-    {
-      id: 3,
-      name: "Yemi O",
-      email: "yemioo@gmail.com",
-      role: "Staff",
-      signInTime: "9:20 AM",
-      signOutTime: "--",
-      status: "In Office",
-    },
-    {
-      id: 4,
-      name: "Uriella A",
-      email: "jewveua@gmail.com",
-      role: "Intern",
-      signInTime: "10:10 AM",
-      signOutTime: "--",
-      status: "In Office",
-    },
-    {
-      id: 5,
-      name: "John Doe",
-      email: "johndoe@gmail.com",
-      role: "Visitor",
-      signInTime: "11:07 AM",
-      signOutTime: "--",
-      status: "In Office",
-    },
-  ]
+  const [users, setUsers] = useState<User[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('/api/users')
+        if (!response.ok) {
+          throw new Error('Failed to fetch users')
+        }
+        const data = await response.json()
+        setUsers(data)
+      } catch (err) {
+        console.error('Error fetching users:', err)
+        setError('Failed to load users. Please try again later.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchUsers()
+  }, [])
+
+  const handleSignOut = async () => {
+    // Placeholder for sign-out logic
+    alert('Sign out functionality to be implemented');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          <p>Loading users...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="p-6">
@@ -89,8 +105,8 @@ export default function AdminDashboard() {
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-semibold mb-1">Daily Log</h2>
-              <p className="text-white text-sm">See who&apos;s signed in today</p>
+              <h2 className="text-xl font-semibold mb-1">User Management</h2>
+              <p className="text-white text-sm">View and manage all registered users</p>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" className="gap-2 bg-white">
@@ -114,43 +130,55 @@ export default function AdminDashboard() {
                     <th className="min-w-[200px] text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Name</th>
                     <th className="min-w-[200px] text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Email</th>
                     <th className="w-24 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Role</th>
-                    <th className="w-32 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Sign In</th>
-                    <th className="w-36 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Sign Out</th>
+                    <th className="w-32 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Position</th>
+                    <th className="w-36 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Contact</th>
+                    <th className="w-48 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Last Signed In</th>
                     <th className="w-28 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Status</th>
+                    <th className="w-28 text-left p-4 font-medium text-gray-500 text-xs uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 
                 <tbody className="divide-y divide-gray-200">
                   {users.map((user, index) => (
-                    <tr key={user.id} className="">
-                      <td className="p-4 text-sm text-black dark:text-white ">{index + 1}</td>
+                    <tr key={user.id} className="hover:bg-gray-50">
+                      <td className="p-4 text-sm text-black dark:text-white">{index + 1}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8">
-                            <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                            <AvatarFallback>{user.fullName.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                           </Avatar>
-                          <span className="font-medium">{user.name}</span>
+                          <span className="font-medium">{user.fullName}</span>
                         </div>
                       </td>
                       <td className="p-4 text-sm text-black dark:text-white">{user.email}</td>
                       <td className="p-4 whitespace-nowrap">
-                        <Badge variant="outline" className="text-xs w-full text-center">
+                        <Badge variant="outline" className="text-xs w-full text-center capitalize">
                           {user.role}
                         </Badge>
                       </td>
-                      <td className="p-4 text-sm text-black dark:text-white whitespace-nowrap">{user.signInTime}</td>
-                      <td className="p-4 text-sm text-black dark:text-white whitespace-nowrap">{user.signOutTime}</td>
+                      <td className="p-4 text-sm text-black dark:text-white">{user.position}</td>
+                      <td className="p-4 text-sm text-black dark:text-white">{user.contact}</td>
+                      <td className="p-4 text-sm text-black dark:text-white">
+                        {user.lastSignedIn ? new Date(user.lastSignedIn).toLocaleString() : 'Never'}
+                      </td>
                       <td className="p-4">
                         <Badge
-                          variant={user.status === "Complete" ? "outline" : "default"}
-                          className={
-                            user.status === "Complete"
-                              ? "bg-gray-100 text-gray-700 hover:bg-gray-100 border-gray-200"
-                              : "bg-green-100 text-green-700 hover:bg-green-100 border-green-200"
-                          }
+                          variant="default"
+                          className={`${
+                            user.lastSignedIn && new Date(user.lastSignedIn).getTime() > Date.now() - 5 * 60 * 1000
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-gray-100 text-gray-700'
+                          } hover:bg-green-100 border-green-200`}
                         >
-                          {user.status}
+                          {user.lastSignedIn && new Date(user.lastSignedIn).getTime() > Date.now() - 5 * 60 * 1000
+                            ? 'Online'
+                            : 'Offline'}
                         </Badge>
+                      </td>
+                      <td className="p-4">
+                        <Button variant="destructive" size="sm" onClick={handleSignOut}>
+                          Sign Out
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -161,7 +189,9 @@ export default function AdminDashboard() {
 
           {/* Pagination */}
           <div className="flex items-center justify-between mt-6">
-            <p className="text-sm text-black dark:text-white">Showing 5 of 5</p>
+            <p className="text-sm text-black dark:text-white">
+              Showing {users.length} of {users.length} users
+            </p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" className="h-8 w-8 p-0" disabled>
                 <ChevronLeft className="h-4 w-4" />
@@ -170,14 +200,6 @@ export default function AdminDashboard() {
                 1
               </Button>
               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                2
-              </Button>
-              <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                3
-              </Button>
-              <span className="text-gray-500 px-2">...</span>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
-                Next
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
